@@ -10,6 +10,10 @@ interface Movie {
   description: string;
   rating: string;
   release_year: number;
+  director: string;
+  cast: string;
+  country: string;
+  duration: string;
   genre: string;
   slug: string;
 }
@@ -193,7 +197,7 @@ const MoviePage = () => {
         <h2>{title}</h2>
         <RecommendationScroll>
           {recs.map((title, i) => (
-            <RecommendationCard key={i} onClick={() => navigate(`/movie/${slugify(title)}`)}>
+            <RecommendationCard key={i}>
               <img
                 src={getPosterPath(title)}
                 alt={title}
@@ -201,6 +205,12 @@ const MoviePage = () => {
                   (e.currentTarget as HTMLImageElement).src = "/Movie Posters/fallback.jpg";
                 }}
               />
+              <MovieOverlay className="overlay">
+                  <h4>{title}</h4>
+                  <button onClick={() => window.location.href = `/movie/${slugify(title)}`}>
+                      Go to Movie
+                  </button>
+              </MovieOverlay>
             </RecommendationCard>
           ))}
         </RecommendationScroll>
@@ -238,6 +248,10 @@ const MoviePage = () => {
             <MetaItem><strong>Release Year:</strong> {movie.release_year}</MetaItem>
             <MetaItem><strong>Rating:</strong> {movie.rating}</MetaItem>
             <MetaItem><strong>Genre:</strong> {movie.genre}</MetaItem>
+            <MetaItem><strong>Duration:</strong> {movie.duration}</MetaItem>
+            <MetaItem><strong>Director:</strong> {movie.director}</MetaItem>
+            <MetaItem><strong>Country:</strong> {movie.country}</MetaItem>
+            <MetaItem><strong>Cast:</strong> {movie.cast}</MetaItem>
           </Metadata>
           <MetaItem style={{ marginTop: "2rem" }}>
             <strong>Rate: {renderStars()}</strong>
@@ -300,7 +314,7 @@ const Overlay = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 3rem;
+  padding: 6rem;
   box-sizing: border-box;
   color: white;
   min-height: 100vh;
@@ -324,8 +338,8 @@ const Description = styled.p`
 const Metadata = styled.div`
   margin-top: 1.5rem;
   display: flex;
-  gap: 2rem;
-  font-size: 1rem;
+  gap: 0.5rem;
+  font-size: 0.75rem;
   color: #ddd;
   flex-wrap: wrap;
 `;
@@ -380,6 +394,7 @@ const RecommendationScroll = styled.div`
 `;
 
 const RecommendationCard = styled.div`
+  position: relative;
   flex: 0 0 auto;
   width: 160px;
   height: 240px;
@@ -391,6 +406,11 @@ const RecommendationCard = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  &:hover .overlay {
+    transform: translateY(0%);
+    pointer-events: all;
   }
 `;
 
@@ -408,5 +428,46 @@ const Star = styled.span<{ $filled: boolean }>`
 
   &:hover {
     transform: scale(1.2);
+  }
+`;
+
+const MovieOverlay = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent 60%);
+  color: white;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  transform: translateY(100%);
+  transition: transform 0.4s ease;
+  pointer-events: none;
+
+  & h4 {
+    margin: 0;
+    font-size: 1rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  & button {
+    background: white;
+    color: black;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background 0.3s;
+
+    &:hover {
+      background: #eee;
+    }
   }
 `;
