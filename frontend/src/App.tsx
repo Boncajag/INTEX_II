@@ -10,12 +10,18 @@ import AdminPage from "./pages/AdminPage";
 import SearchResults from "./pages/SearchResults";
 import "bootstrap/dist/css/bootstrap.min.css";
 import FooterComponent from "./components/FooterComponent";
+import ScrollToTop from "./components/ScrollToTop";
+
+if ("scrollRestoration" in window.history) {
+  window.history.scrollRestoration = "manual";
+}
 
 /*---> Component <---*/
 const App: React.FC = () => {
   return (
     <>
       <Router>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
