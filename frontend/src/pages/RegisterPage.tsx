@@ -106,7 +106,7 @@ function Register() {
   };
 
   return (
-    <HeaderComponent>
+    <HeaderComponent backgroundSrc="/bigback.png" >
       <LoginHeroContent>
         <h1>Create Account</h1>
         <h2>Join CineNiche today</h2>
@@ -230,7 +230,7 @@ const OptFormButton = styled.button`
   position: relative;
   overflow: hidden;
   width: fit-content;
-  height: 60px;
+  height: 45px;
   background: #000;
   color: white;
   padding: 0 32px;
@@ -243,7 +243,7 @@ const OptFormButton = styled.button`
   img {
     margin-left: 10px;
     filter: brightness(0) invert(1);
-    width: 24px;
+    width: 14px;
     transition: filter 0.4s ease;
     position: relative;
     z-index: 3;
