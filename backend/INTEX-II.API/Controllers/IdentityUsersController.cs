@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
 
 [ApiController]
 [Route("[controller]")]
-[Authorize(Roles = "Administrator")]
+//[Authorize]
 public class UserController : ControllerBase
 {
     private readonly UserManager<IdentityUser> _userManager;
