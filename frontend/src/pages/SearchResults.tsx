@@ -85,6 +85,7 @@ const SearchResults = () => {
                             <img
                                 src={movie.posterFile}
                                 alt={movie.title}
+                                loading="lazy" // 👈 this is the key part
                                 onError={(e) => {
                                     (e.currentTarget as HTMLImageElement).src = "/Movie Posters/fallback.jpg";
                                 }}

@@ -77,6 +77,18 @@ const Header = ({
         navigate(`/browse?genre=${genre}`);
     };
 
+    const handleHomeClick = () => {
+        window.location.href = "/browse";
+    };
+
+    const handleMoviesClick = () => {
+        window.location.href = "/browse?type=Movies";
+    };
+
+    const handleTVClick = () => {
+        window.location.href = "/browse?type=TV-Shows";
+    };
+
     const handleSearch = () => {
         if (searchQuery.trim()) {
             navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
@@ -84,11 +96,7 @@ const Header = ({
             setSearchOpen(false);
         }
     };
-
-    const handleHomeClick = () => {
-        navigate("/browse");
-        setTimeout(() => setSelectedGenre("all"), 0);
-    };
+    
 
     const isGenreSelected = () => {
         return selectedGenre !== "all" && !window.location.search.includes("type=");
@@ -101,11 +109,7 @@ const Header = ({
             </LogoWrapper>
             <NavMenu>
                 <NavItem
-                    $active={
-                        location.pathname === "/browse" &&
-                        !location.search.includes("type=") &&
-                        selectedGenre === "all"
-                    }
+                    $active={location.pathname === "/browse" && !location.search.includes("type=") && selectedGenre === "all"}
                     onClick={handleHomeClick}
                 >
                     Home
@@ -113,14 +117,14 @@ const Header = ({
 
                 <NavItem
                     $active={location.search.includes("type=Movies")}
-                    onClick={() => navigate("/browse?type=Movies")}
+                    onClick={handleMoviesClick}
                 >
                     Movies
                 </NavItem>
 
                 <NavItem
                     $active={location.search.includes("type=TV-Shows")}
-                    onClick={() => navigate("/browse?type=TV-Shows")}
+                    onClick={handleTVClick}
                 >
                     TV Shows
                 </NavItem>
@@ -142,6 +146,7 @@ const Header = ({
             <IconWrapper>
                 {searchOpen && (
                     <SearchInput
+                        $visible={searchOpen}
                         type="text"
                         placeholder="Search titles..."
                         value={searchQuery}
@@ -149,6 +154,7 @@ const Header = ({
                         onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                         autoFocus
                     />
+
                 )}
                 <StyledIcon as={FiSearch} onClick={() => setSearchOpen(!searchOpen)} />
                 <StyledIcon as={FiUser} onClick={() => setUserMenuOpen(!userMenuOpen)} />
@@ -219,11 +225,17 @@ const GenreSelect = styled.select<{ $active?: boolean }>`
 `;
 
 const IconWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  width: 250px;
-  justify-content: flex-end;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    justify-content: flex-end;
+    position: relative;
+    min-width: 240px;
+    flex-shrink: 0;
+
+    > * {
+        flex-shrink: 0;
+    }
 `;
 
 const LogoWrapper = styled.div`
@@ -233,23 +245,37 @@ const LogoWrapper = styled.div`
 `;
 
 const StyledIcon = styled.div`
-  font-size: 24px;
-  color: white;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+
+    &:hover {
+        transform: scale(1.1);
+    }
 `;
 
-const SearchInput = styled.input`
-  padding: 6px 12px;
-  font-size: 1rem;
-  border: 1px solid white;
-  border-radius: 4px;
-  margin-right: 12px;
-  background-color: black;
-  color: white;
-  width: 200px;
+const SearchInput = styled.input<{ $visible: boolean }>`
+    padding: 6px 12px;
+    font-size: 1rem;
+    border: 1px solid white;
+    border-radius: 4px;
+    background-color: black;
+    color: white;
+    width: ${({ $visible }) => ($visible ? "200px" : "0")};
+    opacity: ${({ $visible }) => ($visible ? 1 : 0)};
+    margin-right: ${({ $visible }) => ($visible ? "12px" : "0")};
+    transition: all 0.4s ease;
+    overflow: hidden;
+    white-space: nowrap;
+    pointer-events: ${({ $visible }) => ($visible ? "auto" : "none")};
 `;
+
 
 const UserDropdown = styled.div`
   position: absolute;
