@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { MovieType } from '../types/MovieType';
 import { handleAddMovie, handleEditMovie, deleteMovie, fetchMovies } from '../api/moviesAPI';
@@ -74,20 +75,20 @@ const AdminPage = () => {
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(e.target.value);
         setCurrentPage(1); // ✅ Important: reset to page 1 on new search
-    };    
-    
+    };
+
     useEffect(() => {
         loadMovies();
-    }, [pageSize, currentPage]);      
+    }, [pageSize, currentPage]);
 
-    const paginatedMovies = movies || [];   
+    const paginatedMovies = movies || [];
 
     if (loading) {
         return <div className="text-center">Loading movies...</div>;
     }
     if (error) {
         return <div className="text-danger text-center">Error: {error}</div>;
-    }   
+    }
 
     return (
         <div style={{ backgroundColor: '#141414', color: '#fff' }}>
@@ -141,47 +142,47 @@ const AdminPage = () => {
                         <GenreTitle>All Movies</GenreTitle>
                         <ScrollRow>
                             {paginatedMovies.map((movie) => (
-                            <MovieCard key={movie.show_id}>
-                                <MoviePoster
-                                src={getPosterPath(movie.title)}
-                                alt={movie.title}
-                                onError={(e) => {
-                                    (e.currentTarget as HTMLImageElement).src = "/Movie Posters/fallback.jpg";
-                                }}
-                                />
-                                <MovieOverlay className="overlay">
-                                <h4>{movie.title}</h4>
-                                <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                    <button
-                                    onClick={() => setEditingMovie(movie)}
-                                    style={{
-                                        backgroundColor: '#facc15',
-                                        color: '#000',
-                                        padding: '0.4rem 0.6rem',
-                                        borderRadius: '4px',
-                                        cursor: 'pointer'
-                                    }}
-                                    >
-                                    Edit
-                                    </button>
-                                    <button
-                                    onClick={() => handleDelete(movie.show_id)}
-                                    style={{
-                                        backgroundColor: '#ef4444',
-                                        color: '#fff',
-                                        padding: '0.4rem 0.6rem',
-                                        borderRadius: '4px',
-                                        cursor: 'pointer'
-                                    }}
-                                    >
-                                    Delete
-                                    </button>
-                                </div>
-                                </MovieOverlay>
-                            </MovieCard>
+                                <MovieCard key={movie.show_id}>
+                                    <MoviePoster
+                                        src={getPosterPath(movie.title)}
+                                        alt={movie.title}
+                                        onError={(e) => {
+                                            (e.currentTarget as HTMLImageElement).src = "/Movie Posters/fallback.jpg";
+                                        }}
+                                    />
+                                    <MovieOverlay className="overlay">
+                                        <h4>{movie.title}</h4>
+                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                            <button
+                                                onClick={() => setEditingMovie(movie)}
+                                                style={{
+                                                    backgroundColor: '#facc15',
+                                                    color: '#000',
+                                                    padding: '0.4rem 0.6rem',
+                                                    borderRadius: '4px',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                Edit
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete(movie.show_id)}
+                                                style={{
+                                                    backgroundColor: '#ef4444',
+                                                    color: '#fff',
+                                                    padding: '0.4rem 0.6rem',
+                                                    borderRadius: '4px',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </MovieOverlay>
+                                </MovieCard>
                             ))}
                         </ScrollRow>
-                        </GenreRow>
+                    </GenreRow>
                 ) : (
                     <div>No movies found.</div>
                 )}
@@ -200,110 +201,110 @@ const AdminPage = () => {
 export default AdminPage;
 
 const GenreRow = styled.div`
-  margin-top: 3rem;
-  padding: 0 1rem;
+    margin-top: 3rem;
+    padding: 0 1rem;
 `;
 
 const GenreTitle = styled.h3`
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
 `;
 
 const ScrollRow = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
 `;
 
 const MovieCard = styled.div`
-  position: relative;
-  min-width: 160px;
-  max-width: 160px;
-  height: 240px;
-  overflow: hidden;
-  border-radius: 8px;
-  flex-shrink: 0;
-  cursor: pointer;
-  transition: transform 0.3s ease;
+    position: relative;
+    min-width: 160px;
+    max-width: 160px;
+    height: 240px;
+    overflow: hidden;
+    border-radius: 8px;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: transform 0.3s ease;
 
-  &:hover {
-    transform: scale(1.05);
-  }
+    &:hover {
+        transform: scale(1.05);
+    }
 
-  &:hover .overlay {
-    transform: translateY(0%);
-    pointer-events: auto;
-  }
+    &:hover .overlay {
+        transform: translateY(0%);
+        pointer-events: auto;
+    }
 `;
 
 const MoviePoster = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 `;
 
 const MovieOverlay = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent 60%);
-  color: white;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  transform: translateY(100%);
-  transition: transform 0.4s ease;
-  pointer-events: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent 60%);
+    color: white;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    transform: translateY(100%);
+    transition: transform 0.4s ease;
+    pointer-events: none;
 
-  & h4 {
-    margin: 0;
-    font-size: 1rem;
-    text-align: center;
-    margin-bottom: 0.5rem;
-  }
-
-  & button {
-    background: white;
-    color: black;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 4px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 0.85rem;
-    transition: background 0.3s;
-
-    &:hover {
-      background: #eee;
+    & h4 {
+        margin: 0;
+        font-size: 1rem;
+        text-align: center;
+        margin-bottom: 0.5rem;
     }
-  }
+
+    & button {
+        background: white;
+        color: black;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 0.85rem;
+        transition: background 0.3s;
+
+        &:hover {
+            background: #eee;
+        }
+    }
 `;
 
 const IconGroup = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
 `;
 
 const StyledIcon = styled.div`
-  font-size: 24px;
-  color: white;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
 `;
 
 const SearchInput = styled.input`
-  padding: 6px 12px;
-  font-size: 1rem;
-  border: 1px solid white;
-  border-radius: 4px;
-  margin-right: 12px;
-  background-color: black;
-  color: white;
-  width: 200px;
+    padding: 6px 12px;
+    font-size: 1rem;
+    border: 1px solid white;
+    border-radius: 4px;
+    margin-right: 12px;
+    background-color: black;
+    color: white;
+    width: 200px;
 `;
